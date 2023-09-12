@@ -1,0 +1,11 @@
+{
+  "name": "apollo-router",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "./router --dev -c router-config.yaml -s supergraph.graphql",
+    "rover:compose": "rover supergraph compose --config supergraph-config.yaml > supergraph.graphql",
+    "download:router": "curl -sSL https://router.apollo.dev/download/nix/latest | sh"
+  }
+}

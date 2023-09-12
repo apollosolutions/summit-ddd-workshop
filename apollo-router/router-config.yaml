@@ -1,0 +1,4 @@
+# yaml-language-server: $schema=configuration_schema.json
+
+cors:
+  allow_any_origin: true

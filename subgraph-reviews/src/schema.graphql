@@ -1,0 +1,25 @@
+  extend schema @link(url: "https://specs.apollo.dev/federation/v2.3", as: "fed", import: ["@key"])
+
+  type Review {
+    id: ID!
+    content: String!
+    rating: Int!
+    reviewerName: String
+    timeSincePosted: String
+  }
+
+  type Track @key(fields: "id") {
+    id: ID!
+    reviews: [Review]!
+    reviewMetrics: ReviewMetrics!
+  }
+
+  type ReviewMetrics {
+    trackId: ID! 
+    reviewCount: Int
+    averageRating: Float
+  }
+
+  type Query {
+    reviewMetrics(trackId: ID!): ReviewMetrics!
+  }
