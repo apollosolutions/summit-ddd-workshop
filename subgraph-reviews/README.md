@@ -1,3 +1,3 @@
-# Catstronauts - server
+# Reviews Subgraph GraphQL server
 
-The starting point of the `server` code.
+run via `npm run start`

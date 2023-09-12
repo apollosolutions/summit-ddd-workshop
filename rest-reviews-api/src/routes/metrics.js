@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const reviewMetrics = require('../mocks/mockReviewMetrics');
 const pool = require('../pg-pool');
 
 /**
