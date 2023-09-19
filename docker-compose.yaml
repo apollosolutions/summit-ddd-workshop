@@ -7,54 +7,6 @@ version: '3.8'
 
 services:
 
-  rest-api:
-    container_name: rest-api
-    build:
-      context: ./rest-reviews-api
-    ports:
-      - "5252:5252"
-    depends_on:
-      - postgres
-
-  front-end:
-    build:
-      context: ./front-end
-    ports:
-      - "3000:3000"
-    environment:
-      - CHOKIDAR_USEPOLLING=true # This helps with hot-reloading in some environments
-    depends_on:
-      - rest-api
-
-  subgraph-reviews:
-    container_name: subgraph-reviews
-    build:
-      context: ./subgraph-reviews
-    ports:
-      - "4002:4002"
-    depends_on:
-      - rest-api
-      - postgres
-
-  subgraph-tracks:
-    container_name: subgraph-tracks
-    build:
-      context: ./subgraph-tracks
-    ports:
-      - "4001:4001"
-    depends_on:
-      - rest-api
-      - postgres
-
-  apollo-router:
-    image: ghcr.io/apollographql/router:v1.30.0
-    ports:
-      - "4000:4000"
-    volumes:
-      - ./apollo-router/supergraph.graphql:/dist/supergraph.graphql
-      - ./apollo-router/router-config.yaml:/dist/router-config.yaml
-    command: -c /dist/router-config.yaml -s /dist/supergraph.graphql --dev
-
   postgres:
     image: postgres:14.3
     restart: always
@@ -66,3 +18,54 @@ services:
     volumes: 
       - ./.sql:/docker-entrypoint-initdb.d
       - ./.postgres-data:/var/lib/postgresql/data
+
+  reviews-rest-api:
+    container_name: review-rest-api
+    build:
+      context: ./reviews-rest-api
+    ports:
+      - "5252:5252"
+    depends_on:
+      - postgres
+
+  subgraph-reviews:
+    container_name: subgraph-reviews
+    build:
+      context: ./subgraph-reviews
+    ports:
+      - "4002:4002"
+    depends_on:
+      - reviews-rest-api
+
+  subgraph-tracks:
+    container_name: subgraph-tracks
+    build:
+      context: ./subgraph-tracks
+    ports:
+      - "4001:4001"
+    depends_on:
+      - reviews-rest-api
+
+  apollo-router:
+    image: ghcr.io/apollographql/router:v1.30.0
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./apollo-router/supergraph.graphql:/dist/supergraph.graphql
+      - ./apollo-router/router-config.yaml:/dist/router-config.yaml
+    command: -c /dist/router-config.yaml -s /dist/supergraph.graphql --dev
+    depends_on:
+      - subgraph-tracks
+      - subgraph-reviews
+
+  front-end:
+    build:
+      context: ./front-end
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true # This helps with hot-reloading in some environments
+    depends_on:
+      - apollo-router
+
+

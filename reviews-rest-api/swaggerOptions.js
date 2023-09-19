@@ -8,7 +8,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5252',
+        url: 'http://reviews-rest-api:5252',
       },
     ],
   },
