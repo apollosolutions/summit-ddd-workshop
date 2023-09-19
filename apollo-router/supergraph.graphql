@@ -1,0 +1,137 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+{
+  query: Query
+}
+
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+"""Author of a complete Track or a Module"""
+type Author
+  @join__type(graph: TRACKS, key: "id")
+{
+  id: ID!
+
+  """Author's first and last name"""
+  name: String!
+
+  """Author's profile picture"""
+  photo: String
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  REVIEWS @join__graph(name: "reviews", url: "http://subgraph-reviews:4002/graphql")
+  TRACKS @join__graph(name: "tracks", url: "http://subgraph-tracks:4001/graphql")
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+"""
+A Module is a single unit of teaching. Multiple Modules compose a Track
+"""
+type Module
+  @join__type(graph: TRACKS)
+{
+  id: ID!
+
+  """The module's title"""
+  title: String!
+
+  """The module's length in minutes"""
+  length: Int
+  content: String
+  videoUrl: String
+}
+
+type Query
+  @join__type(graph: REVIEWS)
+  @join__type(graph: TRACKS)
+{
+  reviewMetrics(trackId: ID!): ReviewMetrics! @join__field(graph: REVIEWS)
+
+  """Query to get tracks array for the homepage grid"""
+  tracksForHome: [Track!]! @join__field(graph: TRACKS)
+
+  """Fetch a specific track, provided a track's ID"""
+  track(id: ID!): Track! @join__field(graph: TRACKS)
+  module(id: ID!): Module! @join__field(graph: TRACKS)
+}
+
+type Review
+  @join__type(graph: REVIEWS)
+{
+  id: ID!
+  content: String!
+  rating: Int!
+  reviewerName: String
+  timeSincePosted: String
+}
+
+type ReviewMetrics
+  @join__type(graph: REVIEWS)
+{
+  trackId: ID!
+  reviewCount: Int
+  averageRating: Float
+}
+
+"""A track is a group of Modules that teaches about a specific topic"""
+type Track
+  @join__type(graph: REVIEWS, key: "id")
+  @join__type(graph: TRACKS, key: "id")
+{
+  id: ID!
+  reviews: [Review]! @join__field(graph: REVIEWS)
+  reviewMetrics: ReviewMetrics! @join__field(graph: REVIEWS)
+
+  """The track's title"""
+  title: String! @join__field(graph: TRACKS)
+
+  """The track's main Author"""
+  author: Author! @join__field(graph: TRACKS)
+
+  """The track's illustration to display in track card or track page detail"""
+  thumbnail: String @join__field(graph: TRACKS)
+
+  """The track's approximate length to complete, in minutes"""
+  length: Int @join__field(graph: TRACKS)
+
+  """The number of modules this track contains"""
+  modulesCount: Int @join__field(graph: TRACKS)
+
+  """The track's complete description, can be in markdown format"""
+  description: String @join__field(graph: TRACKS)
+
+  """The number of times a track has been viewed"""
+  numberOfViews: Int @join__field(graph: TRACKS)
+
+  """The track's complete array of Modules"""
+  modules: [Module!]! @join__field(graph: TRACKS)
+}

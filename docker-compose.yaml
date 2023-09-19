@@ -1,62 +1,59 @@
 version: '3.8'
 
+# networks:
+#   hostnet:
+#     external: true
+#     name: host
+
 services:
 
-  # rest-api:
-  #   build:
-  #     context: ./rest-reviews-api
-  #   ports:
-  #     - "5252:5252"
-  #   depends_on:
-  #     - postgres
+  rest-api:
+    container_name: rest-api
+    build:
+      context: ./rest-reviews-api
+    ports:
+      - "5252:5252"
+    depends_on:
+      - postgres
 
-  # front-end:
-  #   build:
-  #     context: ./front-end
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - CHOKIDAR_USEPOLLING=true # This helps with hot-reloading in some environments
-  #   depends_on:
-  #     - rest-api
+  front-end:
+    build:
+      context: ./front-end
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true # This helps with hot-reloading in some environments
+    depends_on:
+      - rest-api
 
-  # subgraph-reviews:
-  #   build:
-  #     context: ./subgraph-reviews
-  #   ports:
-  #     - "4002:4002"
-  #   depends_on:
-  #     - rest-api
-  #     - postgres
+  subgraph-reviews:
+    container_name: subgraph-reviews
+    build:
+      context: ./subgraph-reviews
+    ports:
+      - "4002:4002"
+    depends_on:
+      - rest-api
+      - postgres
 
-  # subgraph-tracks:
-  #   build:
-  #     context: ./subgraph-tracks
-  #   ports:
-  #     - "4001:4001"
-  #   depends_on:
-  #     - rest-api
-  #     - postgres
+  subgraph-tracks:
+    container_name: subgraph-tracks
+    build:
+      context: ./subgraph-tracks
+    ports:
+      - "4001:4001"
+    depends_on:
+      - rest-api
+      - postgres
 
-  # apollo-router:
-  #   image: ghcr.io/apollographql/router:1.29.1
-  #   ports:
-  #     - "4000:4000"
-  #   volumes:
-  #     - /apollo-router/supergraph.graphql:/dist/schema/supergraph.graphql
-  #     - /apollo-router/router-config.yaml:/app/config/router-config.yaml
-  #   command: -c /app/config/router-config.yaml -s /dist/schema/local.graphql
-
-#   postgres:
-#     image: postgres:13
-#     environment:
-#       POSTGRES_USER: user
-#       POSTGRES_PASSWORD: password
-#       POSTGRES_DB: mydatabase
-#     ports:
-#       - "5432:5432"
-#     volumes:
-#       - postgres-data:/var/lib/postgresql/data
+  apollo-router:
+    image: ghcr.io/apollographql/router:v1.30.0
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./apollo-router/supergraph.graphql:/dist/supergraph.graphql
+      - ./apollo-router/router-config.yaml:/dist/router-config.yaml
+    command: -c /dist/router-config.yaml -s /dist/supergraph.graphql --dev
 
   postgres:
     image: postgres:14.3
@@ -69,6 +66,3 @@ services:
     volumes: 
       - ./.sql:/docker-entrypoint-initdb.d
       - ./.postgres-data:/var/lib/postgresql/data
-
-# volumes:
-#   postgres-data:

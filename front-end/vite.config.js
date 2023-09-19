@@ -11,7 +11,7 @@ export default defineConfig(() => ({
     environment: 'happy-dom',
   },
   server: {
-    host: 'localhost',
+    host: '0.0.0.0',
     port: 3000
   },
   esbuild: {

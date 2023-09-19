@@ -1,13 +1,13 @@
-FROM node:14
+FROM node:18-bullseye-slim
 
-WORKDIR /
+WORKDIR /usr/app/
 
-COPY package*.json ./
+COPY package.json .
 
 RUN npm install
 
-COPY . .
+COPY src/ ./src/
 
-EXPOSE 5252
+EXPOSE 4002
 
 CMD ["npm", "start"]
