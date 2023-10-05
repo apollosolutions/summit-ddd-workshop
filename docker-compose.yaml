@@ -1,12 +1,9 @@
 version: '3.8'
 
-# networks:
-#   hostnet:
-#     external: true
-#     name: host
+networks:
+  federation: {}
 
 services:
-
   postgres:
     image: postgres:14.3
     restart: always
@@ -34,6 +31,8 @@ services:
       context: ./subgraph-reviews
     ports:
       - "4002:4002"
+    volumes:
+      - ./subgraph-reviews/src:/app/src
     depends_on:
       - reviews-rest-api
 
@@ -43,11 +42,13 @@ services:
       context: ./subgraph-tracks
     ports:
       - "4001:4001"
+    volumes:
+      - ./subgraph-tracks/src:/app/src
     depends_on:
       - reviews-rest-api
 
   apollo-router:
-    image: ghcr.io/apollographql/router:v1.30.0
+    image: ghcr.io/apollographql/router:v1.32.0
     ports:
       - "4000:4000"
     volumes:
@@ -67,5 +68,4 @@ services:
       - CHOKIDAR_USEPOLLING=true # This helps with hot-reloading in some environments
     depends_on:
       - apollo-router
-
 

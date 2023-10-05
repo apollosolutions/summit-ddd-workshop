@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "start": "./router --dev -c router-config.yaml -s supergraph.graphql",
-    "rover:compose": "rover supergraph compose --config supergraph-config.yaml > supergraph.graphql",
-    "download:router": "curl -sSL https://router.apollo.dev/download/nix/latest | sh"
+    "rover:compose": "rover supergraph compose --config supergraph-config.yaml > supergraph.graphql"
   }
 }
