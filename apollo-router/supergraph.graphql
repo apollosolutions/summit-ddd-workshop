@@ -74,8 +74,6 @@ type Query
   @join__type(graph: REVIEWS)
   @join__type(graph: TRACKS)
 {
-  reviewMetrics(trackId: ID!): ReviewMetrics! @join__field(graph: REVIEWS)
-
   """Query to get tracks array for the homepage grid"""
   tracksForHome: [Track!]! @join__field(graph: TRACKS)
 
@@ -84,54 +82,33 @@ type Query
   module(id: ID!): Module! @join__field(graph: TRACKS)
 }
 
-type Review
-  @join__type(graph: REVIEWS)
-{
-  id: ID!
-  content: String!
-  rating: Int!
-  reviewerName: String
-  timeSincePosted: String
-}
-
-type ReviewMetrics
-  @join__type(graph: REVIEWS)
-{
-  trackId: ID!
-  reviewCount: Int
-  averageRating: Float
-}
-
 """A track is a group of Modules that teaches about a specific topic"""
 type Track
-  @join__type(graph: REVIEWS, key: "id")
   @join__type(graph: TRACKS, key: "id")
 {
   id: ID!
-  reviews: [Review]! @join__field(graph: REVIEWS)
-  reviewMetrics: ReviewMetrics! @join__field(graph: REVIEWS)
 
   """The track's title"""
-  title: String! @join__field(graph: TRACKS)
+  title: String!
 
   """The track's main Author"""
-  author: Author! @join__field(graph: TRACKS)
+  author: Author!
 
   """The track's illustration to display in track card or track page detail"""
-  thumbnail: String @join__field(graph: TRACKS)
+  thumbnail: String
 
   """The track's approximate length to complete, in minutes"""
-  length: Int @join__field(graph: TRACKS)
+  length: Int
 
   """The number of modules this track contains"""
-  modulesCount: Int @join__field(graph: TRACKS)
+  modulesCount: Int
 
   """The track's complete description, can be in markdown format"""
-  description: String @join__field(graph: TRACKS)
+  description: String
 
   """The number of times a track has been viewed"""
-  numberOfViews: Int @join__field(graph: TRACKS)
+  numberOfViews: Int
 
   """The track's complete array of Modules"""
-  modules: [Module!]! @join__field(graph: TRACKS)
+  modules: [Module!]!
 }

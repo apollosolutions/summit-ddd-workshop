@@ -25,17 +25,6 @@ export const GET_TRACK = gql`
         length
       }
       description
-      reviews {
-        id
-        rating
-        content
-        timeSincePosted
-        reviewerName
-      }
-      reviewMetrics {
-        reviewCount
-        averageRating
-      }
     }
   }
 `;

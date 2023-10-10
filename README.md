@@ -42,7 +42,7 @@ This project consists of 6 distinct applications or services that together, make
 - `subgraph-tracks`: This was previously the `server` in the lift-off series, but converted to a subgraph.
 - `subgraph-reviews`: A net new subgraph for handling review data.
 - `apollo-router`: Basic router config setup.
-- `rest-reviews-api`: This API is the source of truth for review data or our application. This project is intended to represent 2 different APIs: One for review resource data and another for metrics. It's combined in the same app for simplicity sake, but we'll treat this as two separate APIs during the workshop.
+- `rest-reviews-api`: This API is the source of truth for review data for our application. This project is intended to represent 2 different APIs: One for review resource data and another for metrics. It's combined in the same app for simplicity sake, but we'll treat this as two separate APIs during the workshop.
 - `postgres database`: In addition to the above packages, the provided `docker-compose.yaml` file will also spin up a local postgres database and pre-populate it with review data on start up.
 
 ## Test running apps
