@@ -34,15 +34,16 @@ router.get('/reviews', async (req, res) => {
  */
 router.get('/reviews/:trackId', async (req, res) => {
   // const reviewsForTrack = reviews.filter(r => r.trackId === req.params.trackId);
-  const reviewsForTrack = await pool.query(`SELECT '5 days ago' as time_since_posted, * FROM reviews WHERE track_id = $1`, [req.params.trackId]);
+  const reviewsForTrack = await pool.query(`SELECT * FROM reviews WHERE track_id = $1`, [req.params.trackId]);
   if (!reviewsForTrack.rows) return res.status(404).send('Review not found.');
   res.json(reviewsForTrack.rows.map(r => ({
     id: r.id,
     rating: r.rating,
     content: r.content,
-    timeSincePosted: r.time_since_posted,
     reviewerName: r.reviewer_name,
     trackId: r.track_id,
+    createdOn: r.created_on,
+    updatedOn: r.updated_on
   })));
 });
 
