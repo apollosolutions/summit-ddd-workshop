@@ -22,6 +22,10 @@ services:
       context: ./reviews-rest-api
     ports:
       - "5252:5252"
+    volumes:
+      - ./reviews-rest-api/src:/app/src
+      - ./reviews-rest-api/index.js:/app/index.js
+      - ./reviews-rest-api/swaggerOptions.js:/app/swaggerOptions.js
     depends_on:
       - postgres
 
@@ -64,6 +68,11 @@ services:
       context: ./front-end
     ports:
       - "3000:3000"
+    volumes:
+      - ./front-end/src:/app/src
+      - ./front-end/public:/app/public
+      - ./front-end/index.html:/app/index.html
+      - ./front-end/vite.config.js:/app/vite.config.js
     environment:
       - CHOKIDAR_USEPOLLING=true # This helps with hot-reloading in some environments
     depends_on:

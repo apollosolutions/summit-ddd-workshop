@@ -24,7 +24,7 @@ router.get('/reviews', async (req, res) => {
  *    parameters:
  *      - in: path
  *        name: id
- *        required: tru e
+ *        required: true
  *        description: Numeric ID of the review to get
  *        schema:
  *          type: string
