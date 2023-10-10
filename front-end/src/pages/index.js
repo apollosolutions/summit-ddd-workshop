@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Tracks from './tracks';
 import Track from './track';
 import Module from './module';
+import { Layout } from '../components';
 
 export default function Pages() {
   return (
@@ -12,6 +13,7 @@ export default function Pages() {
         <Route element={<Tracks />} path="/" />
         <Route element={<Track />} path="/track/:trackId" />
         <Route element={<Module />} path="/track/:trackId/module/:moduleId" />
+        <Route element={<Layout />} path="/another" />
       </Routes>
     </BrowserRouter>
   );

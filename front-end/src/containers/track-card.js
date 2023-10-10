@@ -10,7 +10,7 @@ import { Rating } from 'react-simple-star-rating'
  * for each track populating the tracks grid homepage.
  */
 const TrackCard = ({ track }) => {
-  const { title, thumbnail, author, length, modulesCount, id } = track;
+  const { title, thumbnail, author, length, modulesCount, id, reviewMetrics } = track;
 
   return (
     <CardContainer to={`/track/${id}`}>
@@ -29,7 +29,7 @@ const TrackCard = ({ track }) => {
               </TrackLength>
             </AuthorAndTrack>
           </CardFooter>
-          {/* <RatingSummary>
+          <RatingSummary>
             <AverageRating>{reviewMetrics.averageRating || 'NA'} </AverageRating>
             <Rating
               initialValue={reviewMetrics.averageRating || 0}
@@ -39,7 +39,7 @@ const TrackCard = ({ track }) => {
               allowHover={false}
             />
             <ReviewCount>({reviewMetrics.reviewCount || 0} reviews)</ReviewCount>
-          </RatingSummary> */}
+          </RatingSummary>
         </CardBody>
       </CardContent>
     </CardContainer>

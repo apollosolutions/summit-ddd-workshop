@@ -29,7 +29,9 @@ const TrackDetail = ({ track }) => {
     length,
     modulesCount,
     modules,
-    numberOfViews
+    numberOfViews,
+    reviews,
+    reviewMetrics
   } = track;
 
   return (
@@ -91,8 +93,7 @@ const TrackDetail = ({ track }) => {
       <SectionLine></SectionLine>
       <MarkDown content={description} />
       <SectionLine></SectionLine>
-
-      {/* <SectionTitleContainer>
+      <SectionTitleContainer>
         <h2>Reviews</h2>
         <Rating
               initialValue={reviewMetrics.averageRating || 0}
@@ -104,16 +105,16 @@ const TrackDetail = ({ track }) => {
             />
         <h4>Average {reviewMetrics.averageRating} star rating</h4>
         <h4>({reviewMetrics.reviewCount} reviews)</h4>
-      </SectionTitleContainer> */}
-
-
-      {/* <ReviewListContainer>
+      </SectionTitleContainer>
+      <ReviewListContainer>
         {reviews.map((review, index) => (
           <ReviewDetail key={index} review={review} />
+          // <div key={review.id}>
+          //   <h3>{review.rating} Stars</h3>
+          //   <p>{review.content}</p>
+          // </div>
         ))}
-      </ReviewListContainer> */}
-
-
+      </ReviewListContainer>
     </ContentSection>
   );
 };

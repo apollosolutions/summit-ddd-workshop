@@ -48,4 +48,3 @@ app.use('/graphql', cors(), json(), expressMiddleware(server, { context }));
 
 await new Promise((resolve) => httpServer.listen({ port }, resolve));
 console.log(`🚀 Server ready at http://localhost:${port}/graphql`);
-

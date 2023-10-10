@@ -12,6 +12,10 @@ const TRACKS = gql`
       thumbnail
       length
       modulesCount
+      reviewMetrics {
+        averageRating
+        reviewCount
+      }
       author {
         name
         photo
