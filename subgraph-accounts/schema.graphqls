@@ -1,0 +1,36 @@
+input AccountCreationInput {
+    username: String!
+    password: String!
+    email: String!
+}
+
+type Account {
+    username: String!
+    email: String!
+}
+
+interface Error {
+    code: Int!
+    message: String!
+}
+
+type AccountCreationFailure implements Error {
+    code: Int!
+    message: String!
+}
+
+type AccountCreationSuccess {
+    account: Account!
+    token: String!
+}
+
+union AccountCreationResponse : AccountCreationSuccess | AccountCreationFailure
+
+type AccountCreationError implements Error {
+    code: Int!
+    message: String!
+}
+
+type Mutation {
+    createAccount(createAccount: AccountCreationInput!): AccountCreationResponse!
+}
